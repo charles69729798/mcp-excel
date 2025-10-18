@@ -1,0 +1,9 @@
+{
+  "filename": "new_excel_file.xlsx",
+  "sheet_name": "MyNewSheet",
+  "data": [
+    ["Header1", "Header2"],
+    [1, 2],
+    [3, 4]
+  ]
+}

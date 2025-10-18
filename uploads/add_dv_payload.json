@@ -1,0 +1,18 @@
+{
+  "filename": "test_dv_existing.xlsm",
+  "data_validations": [
+    {
+      "sheet_name": "DataInput",
+      "cell_range": "B1",
+      "type": "list",
+      "formula1": "=$Lists.$A$2:$A$4"
+    },
+    {
+      "sheet_name": "DataInput",
+      "cell_range": "B2",
+      "type": "whole",
+      "operator": "greaterThan",
+      "value1": "0"
+    }
+  ]
+}

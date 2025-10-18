@@ -1,0 +1,27 @@
+{
+  "filename": "test_dv_existing.xlsm",
+  "sheets": [
+    {
+      "sheet_name": "DataInput",
+      "data": [
+        ["Choose Item:"],
+        ["Enter Quantity:"]
+      ]
+    },
+    {
+      "sheet_name": "Lists",
+      "data": [
+        ["Valid Items"],
+        ["Apple"],
+        ["Banana"],
+        ["Orange"]
+      ]
+    }
+  ],
+  "vba_code": [
+    {
+      "module_name": "Module1",
+      "code": "Sub TestMacro()\n  MsgBox \"Hello from existing file!\"\nEnd Sub"
+    }
+  ]
+}

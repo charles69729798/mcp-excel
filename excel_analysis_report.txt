@@ -1,0 +1,151 @@
+--- Excel Workbook Analysis Report ---
+Analyzed File: C:\InsuranceProject\main.xlsm
+VBA Code Source: C:\InsuranceProject\macro_analysis.txt
+----------------------------------------
+
+--- 'S산출' Sheet Analysis ---
+Purpose: Primary interface for insurance product calculations and displaying results.
+Key Areas:
+  - Input Area (A1:L4): Applied Interest Rate, Base Amount, References to other sheets.
+  - Output/Result Area (B9:Q18): Net Premiums, Alpha values, Error checks.
+  - Actuarial Table (R2:AD~): Life table calculations (lx, qx, Cx, Mx, Dx, Nx) and Mortality Rates.
+
+Sample Data/Formulas from 'S산출' (first 10 rows, first 10 columns):
+  Row 1: [None, None, '->입력', None, None, None, None, None, None, None]
+  Row 2: ['속성\n입력', '참조시트', '적용이율', '기준금액', None, '순P', None, None, '실보기', '연령']
+  Row 3: [None, None, None, '자릿수', '기준금액', '무해지', '유해지', '태아', None, None]
+  Row 4: ['입력', 'Main_무해지', 0.0225, 6, '==10^D4', '==INDIRECT($B$4&"!$K$7")', '==INDIRECT($B$4&"!$L$7")', '==INDIRECT($B$4&"!$L$7")', '==INDIRECT($B$4&"!$F$4")', '==INDIRECT($B$4&"!$E$3")']
+  Row 5: ['** pv통합본 ck에서 속성입력 구분', '** 태아형 S산출을 위해 "Main_무해지"시트 "G3" 식 아래 S용으로 수정 필요', None, None, None, None, None, None, None, None]
+  Row 6: [None, "PV용 '=+IF(PV!$W$33=1,1,0.5)", None, None, None, None, None, None, None, None]
+  Row 7: [None, "S용   '=+IF($E$3=0,1,0.5)", None, None, None, None, None, None, None, None]
+  Row 8: [None, 'S 결과', None, None, None, None, None, None, None, 'α 결과']
+  Row 9: [None, '구분', '==F3', '==G3', '태아', None, None, None, None, None]
+  Row 10: [None, 'S', 0.0458, 0.0624, 0.007, None, None, None, None, '==IF(COUNTIFS($P$13:$P$97,"error")=0, "OK","Check")']
+
+Interactions with VBA Macros:
+  Reads from 'S산출':
+    - Module 'Sheet18': s1 = Worksheets("S산출").Range("L4") '산출 output 시작행
+    - Module 'Sheet18': INPUT1 = Worksheets("S산출").Range("B4") 'main 참조 시트
+    - Module 'Sheet18': INPUT2 = Worksheets("S산출").Range("A4") '속성 입력 시트  '20240227 PV통합본
+    - Module 'Sheet18': s1 = Worksheets("S산출").Range("L4")     'S산출 output 시작행
+    - Module 'Sheet18': num1 = Worksheets("S산출").Range("D4")   '10만당/100만당 자릿수
+    - Module 'Sheet18': var1 = Worksheets("S산출").Range("F3")   '상품구분1
+    - Module 'Sheet18': var2 = Worksheets("S산출").Range("G3")   '상품구분2
+    - Module 'Sheet18': var3 = Worksheets("S산출").Range("H3")   '상품구분3
+    - Module 'Sheet18': renew = Worksheets("S산출").Range("K4")  '갱신여부
+    - Module 'Sheet18': Do While Worksheets("S산출").Cells(s1 + i, "B") <> ""
+    - Module 'Sheet18': xx = Worksheets("S산출").Cells(s1 + i, "E") '연령(주피)
+    - Module 'Sheet18': n = Worksheets("S산출").Cells(s1 + i, "C")  '보험기간
+    - Module 'Sheet18': m = Worksheets("S산출").Cells(s1 + i, "D")  '납입기간
+    - Module 'Sheet18': P = Worksheets("S산출").Range("F4")
+    - Module 'Sheet18': S_1(ii) = Worksheets("S산출").Cells(s1 + i, "H")
+    - Module 'Sheet18': P = Worksheets("S산출").Range("G4")
+    - Module 'Sheet18': S_2(jj) = Worksheets("S산출").Cells(s1 + i, "H")
+    - Module 'Sheet18': P = Worksheets("S산출").Range("H4")
+    - Module 'Sheet18': S_3(kk) = Worksheets("S산출").Cells(s1 + i, "H")
+    - Module 'Sheet18': INPUT1 = Worksheets("S산출").Range("B4") 'main 참조 시트
+    - Module 'Sheet18': INPUT2 = Worksheets("S산출").Range("A4") '속성 입력 시트  '20240227 PV통합본
+    - Module 'Sheet18': s1 = Worksheets("S산출").Range("L4")     '산출 output 시작행
+    - Module 'Sheet18': num1 = Worksheets("S산출").Range("D4")   '10만당/100만당 자릿수
+    - Module 'Sheet18': var1 = Worksheets("S산출").Range("F3")   '상품구분1
+    - Module 'Sheet18': var2 = Worksheets("S산출").Range("G3")   '상품구분2
+    - Module 'Sheet18': var3 = Worksheets("S산출").Range("H3")   '상품구분3
+    - Module 'Sheet18': renew = Worksheets("S산출").Range("K4")  '갱신여부
+    - Module 'Sheet18': Do While Worksheets("S산출").Cells(s1 + i, "J") <> ""
+    - Module 'Sheet18': xx = Worksheets("S산출").Cells(s1 + i, "M") '연령(주피)
+    - Module 'Sheet18': n = Worksheets("S산출").Cells(s1 + i, "K")  '보험기간
+    - Module 'Sheet18': m = Worksheets("S산출").Cells(s1 + i, "L")  '납입기간
+  Writes to 'S산출':
+    - Module 'Sheet18': If Worksheets("S산출").Cells(s1 + i, "B") = var1 Then     'B열구분 항목이랑
+    - Module 'Sheet18': ElseIf Worksheets("S산출").Cells(s1 + i, "B") = var2 Then
+    - Module 'Sheet18': Worksheets("S산출").Range("C10") = WorksheetFunction.RoundDown(min_s1, 4)
+    - Module 'Sheet18': Worksheets("S산출").Range("D10") = WorksheetFunction.RoundDown(min_s2, 4)
+    - Module 'Sheet18': Worksheets("S산출").Range("E10") = WorksheetFunction.RoundDown(min_s3, 4)
+    - Module 'Sheet18': If Worksheets("S산출").Cells(s1 + i, "J") = var1 Then
+    - Module 'Sheet18': Worksheets("S산출").Cells(s1 + i, "N") = Worksheets(INPUT1).Range("K11") '표준알파
+    - Module 'Sheet18': Worksheets("S산출").Cells(s1 + i, "O") = Worksheets(INPUT1).Range("K10") '적용알파
+    - Module 'Sheet18': ElseIf Worksheets("S산출").Cells(s1 + i, "J") = var2 Then
+    - Module 'Sheet18': Worksheets("S산출").Cells(s1 + i, "N") = Worksheets(INPUT1).Range("L11") '표준알파
+    - Module 'Sheet18': Worksheets("S산출").Cells(s1 + i, "O") = Worksheets(INPUT1).Range("L10") '적용알파
+    - Module 'Sheet18': Worksheets("S산출").Cells(s1 + i, "N") = Worksheets(INPUT1).Range("L11") '표준알파
+    - Module 'Sheet18': Worksheets("S산출").Cells(s1 + i, "O") = Worksheets(INPUT1).Range("L10") '적용알파
+  Other interactions with 'S산출':
+    - Module 'Sheet18': Worksheets("S산출").Select
+
+--- '규정체크' Sheet Analysis (Inferred from VBA) ---
+Purpose: Serves as a central repository for defining and checking various insurance product rules and parameters.
+  (Note: Actual sheet content could not be read directly due to tool limitations.)
+
+Interactions with VBA Macros:
+  Reads from '규정체크':
+    - Module 'Module2': t_count = Worksheets("규정체크").Range("A20")    'Type count
+    - Module 'Module2': sx_count = Worksheets("규정체크").Range("B20")    '성별 count
+    - Module 'Module2': 'sy_count = Worksheets("규정체크").Range("B8")   '종피성별 count
+    - Module 'Module2': n_count = Worksheets("규정체크").Range("C20")               '★(수정)
+    - Module 'Module2': m_count = Worksheets("규정체크").Range("E20") '납기 count
+    - Module 'Module2': 'nb_count = Worksheets("규정체크").Range("H8")
+    - Module 'Module2': t = Worksheets("규정체크").Cells(2 + b, "A") 'type
+    - Module 'Module2': sx = Worksheets("규정체크").Cells(2 + a, "B") '성별(주피)
+    - Module 'Module2': n = Worksheets("규정체크").Cells(2 + c, "C")     'n      '★(추가)
+    - Module 'Module2': xx_count = Worksheets("규정체크").Cells(2 + d, "H")   '연령 카운트
+    - Module 'Module2': m = Worksheets("규정체크").Cells(2 + d, "E") '납기
+    - Module 'Module2': xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+    - Module 'Module2': i = Worksheets("규정체크").Range("A26")
+    - Module 'Module2': xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+    - Module 'Module2': i = Worksheets("규정체크").Range("A26")
+    - Module 'Module2': xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+    - Module 'Module2': i = Worksheets("규정체크").Range("A26")
+    - Module 'Module2': xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+    - Module 'Module2': i = Worksheets("규정체크").Range("A26")
+
+--- 'INPUT' Sheet Analysis (Inferred from VBA) ---
+Purpose: Acts as an intermediary or a temporary input buffer for macros to feed parameters into core calculation logic.
+  (Note: Actual sheet content could not be read directly due to tool limitations.)
+
+Interactions with VBA Macros:
+  Writes to 'INPUT':
+    - Module 'Module2': Worksheets("INPUT").Range("C16") = t   'type
+    - Module 'Module2': Worksheets("INPUT").Range("C17") = sx  '성별
+    - Module 'Module2': Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+    - Module 'Module2': 'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+    - Module 'Module2': 'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+    - Module 'Module2': Worksheets("INPUT").Range("C21") = m    '  납입기간
+    - Module 'Module2': Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+    - Module 'Module2': 'Worksheets("INPUT").Range("C22") = nb      '납입주기
+    - Module 'Module2': Worksheets("INPUT").Range("C16") = t   'type
+    - Module 'Module2': Worksheets("INPUT").Range("C17") = sx  '성별
+    - Module 'Module2': Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+    - Module 'Module2': 'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+    - Module 'Module2': 'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+    - Module 'Module2': Worksheets("INPUT").Range("C21") = m    '  납입기간
+    - Module 'Module2': Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+    - Module 'Module2': 'Worksheets("INPUT").Range("C22") = nb      '납입주기
+    - Module 'Module2': Worksheets("INPUT").Range("C16") = t   'type
+    - Module 'Module2': Worksheets("INPUT").Range("C17") = sx  '성별
+    - Module 'Module2': Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+    - Module 'Module2': 'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+    - Module 'Module2': 'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+    - Module 'Module2': Worksheets("INPUT").Range("C21") = m    '  납입기간
+    - Module 'Module2': Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+    - Module 'Module2': 'Worksheets("INPUT").Range("C22") = nb      '납입주기
+    - Module 'Module2': Worksheets("INPUT").Range("C16") = t   'type
+    - Module 'Module2': Worksheets("INPUT").Range("C17") = sx  '성별
+    - Module 'Module2': Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+    - Module 'Module2': 'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+    - Module 'Module2': 'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+    - Module 'Module2': Worksheets("INPUT").Range("C21") = m    '  납입기간
+    - Module 'Module2': Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+    - Module 'Module2': 'Worksheets("INPUT").Range("C22") = nb      '납입주기
+
+--- Summary of Dynamic Relationships ---
+1.  'S산출' serves as the central calculation and display sheet, containing actuarial tables and receiving outputs from various macros.
+2.  '규정체크' (inferred) is a rule definition and parameter generation sheet. The '규정체크()' macro systematically iterates through product configurations defined here, potentially writing results back.
+3.  'INPUT' (inferred) acts as a crucial staging area. Macros write specific parameter combinations to 'INPUT', which are then likely consumed by formulas on 'S산출' or other calculation logic.
+4.  The '보험료및준비금_전산반영_모두실행()' macro (in Sheet20) orchestrates a large-scale data generation process, iterating through parameters, using '설정()', '제한()', '입력설정()' (which interacts with 'INPUT'), and writing comprehensive results to external text files.
+
+To install macros into new Excel files, one would need to:
+  - Replicate the structure and formulas of 'S산출' (especially the actuarial tables).
+  - Understand and adapt the logic from 'Module2.규정체크()' for rule definition and parameter iteration.
+  - Understand and adapt the calculation logic from 'Sheet18.S1Check()' and 'Sheet18.alpha_Check()'.
+  - Recreate the 'INPUT' sheet's role as a parameter buffer.
+  - Adapt the comprehensive data generation logic from 'Sheet20.보험료및준비금_전산반영_모두실행()' if mass output is required.

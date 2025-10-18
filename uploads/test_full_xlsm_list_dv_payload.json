@@ -1,0 +1,59 @@
+{
+  "filename": "test_full_xlsm_list_dv.xlsm",
+  "sheets": [
+    {
+      "sheet_name": "MainData",
+      "data": [
+        ["Item", "Quantity", "Price", "Total"],
+        ["Apple", 10, 1.5, ""],
+        ["Banana", 5, 0.75, ""],
+        ["Orange", 12, 1.2, ""]
+      ]
+    },
+    {
+      "sheet_name": "Settings",
+      "data": [
+        ["Discount Rate", 0.1],
+        ["Valid Items", "Apple,Banana,Orange,Grape"]
+      ]
+    }
+  ],
+  "named_ranges": [
+    {
+      "name": "DiscountRate",
+      "sheet_name": "Settings",
+      "range": "B1"
+    }
+  ],
+  "formulas": [
+    {
+      "sheet_name": "MainData",
+      "cell": "D2",
+      "formula": "=B2*C2*(1-DiscountRate)"
+    },
+    {
+      "sheet_name": "MainData",
+      "cell": "D3",
+      "formula": "=B3*C3*(1-DiscountRate)"
+    },
+    {
+      "sheet_name": "MainData",
+      "cell": "D4",
+      "formula": "=B4*C4*(1-DiscountRate)"
+    }
+  ],
+  "data_validations": [
+    {
+      "sheet_name": "MainData",
+      "cell_range": "A2:A4",
+      "type": "list",
+      "formula1": "=$Settings.$B$2"
+    }
+  ],
+  "vba_code": [
+    {
+      "module_name": "Module1",
+      "code": "Sub CalculateAllTotals()\n  Dim ws As Worksheet\n  Set ws = ThisWorkbook.Sheets(\"MainData\")\n  ws.Range(\"D2\").Formula = \"=B2*C2*(1-DiscountRate)\"\n  ws.Range(\"D3\").Formula = \"=B3*C3*(1-DiscountRate)\"\n  ws.Range(\"D4\").Formula = \"=B4*C4*(1-DiscountRate)\"\nEnd Sub"
+    }
+  ]
+}

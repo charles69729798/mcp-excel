@@ -1,0 +1,1028 @@
+--- Button Macro Analysis ---
+Button Name: Button 1, Macro: main.xlsm!Sheet18.Clear
+Button Name: Button 2, Macro: main.xlsm!Sheet18.S1Check
+Button Name: Button 3, Macro: main.xlsm!Sheet18.alpha_Check
+
+--- VBA Code Extraction ---
+
+--- Module: 현재_통합_문서, Type: 100 ---
+(No code in this module)
+
+--- Module: Sheet5, Type: 100 ---
+(No code in this module)
+
+--- Module: 차트1, Type: 100 ---
+(No code in this module)
+
+--- Module: Module2, Type: 1 ---
+Dim t_count, sx_count, n_count, m_count, nb_count, xx_count, xy_count As Integer
+Dim a, b, c, d, e, f, g, h, i, t As Integer
+Dim xx, sx, xy, sy, m, n, nb As Integer
+
+
+Sub 규정체크()
+ 
+ t_count = Worksheets("규정체크").Range("A20")    'Type count
+ sx_count = Worksheets("규정체크").Range("B20")    '성별 count
+ 'sy_count = Worksheets("규정체크").Range("B8")   '종피성별 count
+ n_count = Worksheets("규정체크").Range("C20")               '★(수정)
+ m_count = Worksheets("규정체크").Range("E20") '납기 count
+ 'nb_count = Worksheets("규정체크").Range("H8")
+ 
+ 
+ For b = 0 To t_count - 1
+ 
+ For a = 0 To sx_count - 1
+
+  t = Worksheets("규정체크").Cells(2 + b, "A") 'type
+  sx = Worksheets("규정체크").Cells(2 + a, "B") '성별(주피)
+
+ For c = 0 To IIf(t = 1, 2, n_count - 1)    '무해지 보기 3가지
+ 
+  If c = 0 And a = 0 Then
+     n = 110
+  ElseIf c = 0 And a = 1 Then
+     n = 112
+  Else
+  n = Worksheets("규정체크").Cells(2 + c, "C")     'n      '★(추가)
+  End If
+ 
+ For d = 0 To IIf(t = 1, 8, m_count - 1)    '무해지 납기 9가지
+ 
+
+    xx_count = Worksheets("규정체크").Cells(2 + d, "H")   '연령 카운트
+  
+       m = Worksheets("규정체크").Cells(2 + d, "E") '납기
+       
+
+If n = 110 Or n = 112 Then
+      
+      For e = 0 To xx_count
+  
+      xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+      
+    
+        Worksheets("INPUT").Range("C16") = t   'type
+        Worksheets("INPUT").Range("C17") = sx  '성별
+        Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+       'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+       'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+        Worksheets("INPUT").Range("C21") = m    '  납입기간
+        Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+       'Worksheets("INPUT").Range("C22") = nb      '납입주기
+    
+  
+  i = Worksheets("규정체크").Range("A26")
+  
+  Range("a24:l24").Select  '복사할 범위 지정                '★(수정)
+  Selection.Copy           '복사명령 실행(Cut, Copy, Paste )
+  
+  Cells(28 + i, "A").Select    '붙여넣을 범위 지정
+  Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+  Application.CutCopyMode = False
+
+
+    Next e
+    
+ElseIf m <= n Then
+
+
+
+ If n > 30 Then '세만기/가입나이 역전 구분
+ 
+          tempxx = xx_count
+   
+          xx_count = Application.WorksheetFunction.Min(70 - 15, IIf(m <= 30, n - m - 15, m - 10 - 15))
+       
+ 
+        For e = 0 To xx_count
+  
+        xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+      
+    
+        Worksheets("INPUT").Range("C16") = t   'type
+        Worksheets("INPUT").Range("C17") = sx  '성별
+        Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+       'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+       'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+        Worksheets("INPUT").Range("C21") = m    '  납입기간
+        Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+       'Worksheets("INPUT").Range("C22") = nb      '납입주기
+    
+  
+        i = Worksheets("규정체크").Range("A26")
+  
+        Range("a24:l24").Select  '복사할 범위 지정                '★(수정)
+        Selection.Copy           '복사명령 실행(Cut, Copy, Paste )
+  
+        Cells(28 + i, "A").Select    '붙여넣을 범위 지정
+        Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+        Application.CutCopyMode = False
+
+        Next e
+    
+    xx_count = tempxx
+      
+ Else: '세만기/가입나이 역전 구분
+ 
+      For e = 0 To xx_count
+  
+      xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+      
+    
+        Worksheets("INPUT").Range("C16") = t   'type
+        Worksheets("INPUT").Range("C17") = sx  '성별
+        Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+       'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+       'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+        Worksheets("INPUT").Range("C21") = m    '  납입기간
+        Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+       'Worksheets("INPUT").Range("C22") = nb      '납입주기
+    
+  
+  i = Worksheets("규정체크").Range("A26")
+  
+  Range("a24:l24").Select  '복사할 범위 지정                '★(수정)
+  Selection.Copy           '복사명령 실행(Cut, Copy, Paste )
+  
+  Cells(28 + i, "A").Select    '붙여넣을 범위 지정
+  Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+  Application.CutCopyMode = False
+
+
+    Next e
+    
+ End If '세만기/가입나이 역전 구분
+    
+Else:
+
+    If m > 30 And n <= 30 Then
+ 
+          tempxx = xx_count
+   
+          xx_count = m - 10 - 15
+       
+        For e = m - n - 15 To xx_count
+  
+        xx = Worksheets("규정체크").Cells(2 + d, "F") + e
+      
+    
+        Worksheets("INPUT").Range("C16") = t   'type
+        Worksheets("INPUT").Range("C17") = sx  '성별
+        Worksheets("INPUT").Range("C18") = xx   '  주피가입연령
+       'Worksheets("INPUT").Range("C16") = sy   ' 종피 성별
+       'Worksheets("INPUT").Range("C17") = xy   ' 종피 가입연령
+        Worksheets("INPUT").Range("C21") = m    '  납입기간
+        Worksheets("INPUT").Range("C19") = n     '  보험기간    '★(수정)
+       'Worksheets("INPUT").Range("C22") = nb      '납입주기
+    
+  
+        i = Worksheets("규정체크").Range("A26")
+  
+        Range("a24:l24").Select  '복사할 범위 지정                '★(수정)
+        Selection.Copy           '복사명령 실행(Cut, Copy, Paste )
+  
+        Cells(28 + i, "A").Select    '붙여넣을 범위 지정
+        Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+        Application.CutCopyMode = False
+
+        Next e
+    
+    xx_count = tempxx
+    
+    
+    Else:
+    
+    End If
+
+ 
+End If
+  
+    
+    Next d
+ 
+    Next c         '★(수정)
+
+    Next a
+ 
+    Next b
+
+
+
+ 
+ 
+End Sub
+
+
+Sub 규정체크_삭제()
+'
+' 규정체크_삭제 매크로
+'
+
+'
+    Range("A28:l1048576").Select        '★(수정)
+    Selection.ClearContents
+End Sub
+
+
+
+--- Module: Sheet18, Type: 100 ---
+Sub Clear()
+
+Dim s1 As Integer
+
+ s1 = Worksheets("S산출").Range("L4") '산출 output 시작행
+
+ 
+    Range("C10 : F10").Select     's결과표
+    Selection.ClearContents
+ 
+    Range("F" & s1 & ":" & "G" & 100).Select  'S산출표
+    Selection.ClearContents
+
+    
+    Range("N" & s1 & ":" & "O" & 100).Select   'a산출표
+    Selection.ClearContents
+
+    Range("A1").Select
+    
+End Sub
+Sub S1Check()
+
+Dim INPUT1, INPUT2, var1, var2, var3, renew As String '20240227 PV통합본
+Dim P, t_P, s1 As Integer
+Dim min_s1, min_s2, min_s3 As Double
+Dim ii, jj, kk, i1, i2 As Integer
+Dim S_1(100), S_2(100), S_3(100) As Double
+Dim xx, sx, xy, sy, m, n, nb, mm, nn, num1 As Integer
+
+ii = 0
+jj = 0
+kk = 0
+min_s1 = 0
+min_s2 = 0
+min_s3 = 0
+
+ INPUT1 = Worksheets("S산출").Range("B4") 'main 참조 시트
+ INPUT2 = Worksheets("S산출").Range("A4") '속성 입력 시트  '20240227 PV통합본
+ s1 = Worksheets("S산출").Range("L4")     'S산출 output 시작행
+ num1 = Worksheets("S산출").Range("D4")   '10만당/100만당 자릿수
+ var1 = Worksheets("S산출").Range("F3")   '상품구분1
+ var2 = Worksheets("S산출").Range("G3")   '상품구분2
+ var3 = Worksheets("S산출").Range("H3")   '상품구분3
+ sx = "남자"                              '성별(주피)
+ renew = Worksheets("S산출").Range("K4")  '갱신여부
+ 
+
+ Do While Worksheets("S산출").Cells(s1 + i, "B") <> ""
+ 
+  xx = Worksheets("S산출").Cells(s1 + i, "E") '연령(주피)
+  n = Worksheets("S산출").Cells(s1 + i, "C")  '보험기간
+  m = Worksheets("S산출").Cells(s1 + i, "D")  '납입기간
+  
+  Worksheets(INPUT2).Range("A3") = "CK"     '20240227 PV통합본
+  Worksheets(INPUT2).Range("E2") = sx '성별 '20240227 PV통합본
+  Worksheets(INPUT2).Range("E3") = xx '연령 '20240227 PV통합본
+  Worksheets(INPUT2).Range("E4") = n  '보기 '20240227 PV통합본
+  Worksheets(INPUT2).Range("E5") = m  '납기 '20240227 PV통합본
+  nn = Worksheets(INPUT1).Range("F4") '실보기
+  mm = Worksheets(INPUT1).Range("F5") '실납기
+    
+  Worksheets("S산출").Select
+  
+  t_P = Round((Cells(5, "X") - Cells(5 + nn, "X")) / (12 * ((Cells(5, "Z") - Cells(5 + mm, "Z")) - 11 / 24 * (Cells(5, "Y") - Cells(5 + mm, "Y")))), num1) * Cells(4, "E")
+  Cells(s1 + i, "G") = t_P
+
+  If Worksheets("S산출").Cells(s1 + i, "B") = var1 Then     'B열구분 항목이랑
+  
+     If renew = "Y" Then                            '
+       Worksheets(INPUT1).Range("E9") = var1
+     End If
+  
+     ii = ii + 1
+     P = Worksheets("S산출").Range("F4")
+     Cells(s1 + i, "F") = P
+     S_1(ii) = Worksheets("S산출").Cells(s1 + i, "H")
+     
+  ElseIf Worksheets("S산출").Cells(s1 + i, "B") = var2 Then
+  
+     If renew = "Y" Then
+       Worksheets(INPUT1).Range("E9") = var2
+     End If
+     
+     jj = jj + 1
+     P = Worksheets("S산출").Range("G4")
+     Cells(s1 + i, "F") = P
+     S_2(jj) = Worksheets("S산출").Cells(s1 + i, "H")
+     
+  Else
+  
+     If renew = "Y" Then
+       Worksheets(INPUT1).Range("E9") = var3
+     End If
+     
+     kk = kk + 1
+     P = Worksheets("S산출").Range("H4")
+     Cells(s1 + i, "F") = P
+     S_3(kk) = Worksheets("S산출").Cells(s1 + i, "H")
+     
+      
+  End If
+  
+  i = i + 1
+
+ Loop
+ 
+ i1 = 2
+ i2 = 2
+
+ min_s1 = S_1(1)
+ min_s2 = S_2(1)
+ min_s3 = S_3(1)
+
+ For i1 = 2 To ii
+
+   If S_1(i1) < min_s1 Then
+      min_s1 = S_1(i1)
+
+   End If
+
+ Next i1
+
+  For i2 = 2 To jj
+
+   If S_2(i2) < min_s2 Then
+      min_s2 = S_2(i2)
+   End If
+
+ Next i2
+
+Worksheets("S산출").Range("C10") = WorksheetFunction.RoundDown(min_s1, 4)
+Worksheets("S산출").Range("D10") = WorksheetFunction.RoundDown(min_s2, 4)
+Worksheets("S산출").Range("E10") = WorksheetFunction.RoundDown(min_s3, 4)
+
+ActiveWorkbook.Save
+
+End Sub
+
+Sub alpha_Check()
+
+   Dim i, j, s1 As Integer
+   Dim INPUT1, INPUT2, var1, var2, renew As String '20240227 PV통합본
+   Dim xx, sx, xy, sy, m, n, nb, mm, nn, num1 As Integer
+   
+   
+ INPUT1 = Worksheets("S산출").Range("B4") 'main 참조 시트
+ INPUT2 = Worksheets("S산출").Range("A4") '속성 입력 시트  '20240227 PV통합본
+ s1 = Worksheets("S산출").Range("L4")     '산출 output 시작행
+ num1 = Worksheets("S산출").Range("D4")   '10만당/100만당 자릿수
+ var1 = Worksheets("S산출").Range("F3")   '상품구분1
+ var2 = Worksheets("S산출").Range("G3")   '상품구분2
+ var3 = Worksheets("S산출").Range("H3")   '상품구분3
+ sx = "남자"                              '성별(주피)
+ renew = Worksheets("S산출").Range("K4")  '갱신여부
+    
+    If renew = "Y" Then
+       Worksheets(INPUT1).Range("E9") = var1
+     End If
+
+   
+    Do While Worksheets("S산출").Cells(s1 + i, "J") <> ""
+     
+       xx = Worksheets("S산출").Cells(s1 + i, "M") '연령(주피)
+       n = Worksheets("S산출").Cells(s1 + i, "K")  '보험기간
+       m = Worksheets("S산출").Cells(s1 + i, "L")  '납입기간
+     
+       Worksheets(INPUT2).Range("A3") = "CK"     '20240227 PV통합본
+       Worksheets(INPUT2).Range("E2") = sx '20240227 PV통합본
+       Worksheets(INPUT2).Range("E3") = xx '20240227 PV통합본
+       Worksheets(INPUT2).Range("E4") = n  '20240227 PV통합본
+       Worksheets(INPUT2).Range("E5") = m  '20240227 PV통합본
+       
+     If Worksheets("S산출").Cells(s1 + i, "J") = var1 Then
+         
+         Worksheets("S산출").Cells(s1 + i, "N") = Worksheets(INPUT1).Range("K11") '표준알파
+         Worksheets("S산출").Cells(s1 + i, "O") = Worksheets(INPUT1).Range("K10") '적용알파
+    
+     ElseIf Worksheets("S산출").Cells(s1 + i, "J") = var2 Then
+     
+         Worksheets("S산출").Cells(s1 + i, "N") = Worksheets(INPUT1).Range("L11") '표준알파
+         Worksheets("S산출").Cells(s1 + i, "O") = Worksheets(INPUT1).Range("L10") '적용알파
+         
+     Else
+     
+         Worksheets("S산출").Cells(s1 + i, "N") = Worksheets(INPUT1).Range("L11") '표준알파
+         Worksheets("S산출").Cells(s1 + i, "O") = Worksheets(INPUT1).Range("L10") '적용알파
+         
+     End If
+     
+     i = i + 1
+     
+    Loop
+    
+    
+ActiveWorkbook.Save
+
+
+End Sub
+
+
+
+
+
+
+
+--- Module: Sheet20, Type: 100 ---
+Option Explicit
+Public 저장경로 As Variant, 보종코드 As String, 갱신여부 As String
+Public 보험기간 As Integer, n As Integer, 제2보험기간 As Integer, n2 As Integer, 납기 As Integer, 납입기간 As Integer, m As Integer, 납입주기 As Integer
+Public 보험기간구분코드 As String, 제2보험기간구분코드 As String, 납입기간구분코드 As String, 납입주기구분코드 As String
+Public 최초연령 As Integer, 주피연령 As Integer, 종피연령 As Integer, 종피성별 As Integer
+Public 표책구분코드 As Variant, 생사구분코드 As Variant
+Public 기준가입금액 As Double
+Public i1 As Integer, i2 As Integer, i3 As Integer, i4 As Integer, i5 As Integer, i6 As Integer, i7 As Integer, i8 As Integer, i9 As Integer, i10 As Integer
+Public i11 As Integer, i12 As Integer, i13 As Integer, i14 As Integer, i15 As Integer, i16 As Integer, i17 As Integer, i18 As Integer, i19 As Integer, i20 As Integer     'i19 주피성별, i20 준비금경과기간용
+Public 제한설정 As Integer
+
+Public Sub 설정()
+   
+    '================조건  설정================
+    보종코드 = Cells(4 + i1, 2)
+    갱신여부 = Cells(4 + i2, 3)
+   
+    If i2 = 2 Then
+       보험기간 = Cells(4 + i3, 17)
+    Else
+       보험기간 = Cells(4 + i3, 4)
+    End If
+   
+    제2보험기간 = Cells(4 + i4, 5)
+    납입기간 = Cells(4 + i5, 6)
+    납입주기 = Cells(4 + i6, 7)
+    최초연령 = Cells(4 + i7, 8)
+    
+    If i2 = 2 Then
+       주피연령 = Cells(4 + i8, 18)
+    Else
+       주피연령 = Cells(4 + i8, 9)
+    End If
+
+    종피연령 = Cells(4 + i9, 10)
+    종피성별 = Cells(4 + i10, 11)
+    표책구분코드 = Cells(4 + i11, 12)
+    생사구분코드 = Cells(4 + i12, 13)
+   
+   
+    '================보기설정================              '년만기 : 01 / 세만기 : 02
+    n2 = 0 '임시 1보기2보기구분상품은 추후 업데이트
+    제2보험기간구분코드 = "00" '임시 1보기2보기구분상품은 추후 업데이트
+    
+    If 보험기간 = 999 Then
+        n = 115 - 주피연령               '[NL통합] 115 > 112 (검증은 112세까지, 준비금테이블은 115세까지 올릴것(수정을 다못했습니다.ㅠㅠ)
+        보험기간구분코드 = "99"
+    ElseIf 보험기간 >= 30 Then
+        n = 보험기간 - 주피연령
+        보험기간구분코드 = "02"
+    Else
+        n = 보험기간
+        보험기간구분코드 = "01"
+    End If
+    
+    '================납기설정================              '년납 : 01 / 세납 : 02
+    
+    If 보험기간 = 30 And 납입기간 >= 30 And 납입기간 <> 99 Then
+       m = 납입기간 - 주피연령
+       납기 = 납입기간
+       납입기간구분코드 = "02"
+    ElseIf 납입기간 = 99 Then
+       m = n
+       납기 = 보험기간
+       납입기간구분코드 = 보험기간구분코드
+    Else
+       m = 납입기간
+       납기 = 납입기간
+       If 납입기간 = 0 Then                               'NL일시납 납기구분코드 0 (※납입기간 = 0, 납입주기 = 99)
+          납입기간구분코드 = "00"
+       Else
+          납입기간구분코드 = "01"
+       End If
+    End If
+    
+    '================납방설정================             '월납 : 01 / 3월납 : 03 / 6월납 : 06 / 연납 : 12 / 일시납 : 99
+    
+    If 납입주기 = 99 Then
+        납입주기구분코드 = "99"
+    Else
+        납입주기구분코드 = WorksheetFunction.Text(12 / 납입주기, "00")
+    End If
+    
+End Sub
+
+Public Sub 제한()
+
+      If m > n _
+      Or n <= 0 _
+      Or m < 0 _
+      Or (납입기간 = 0 And 납입주기 <> 99) _
+      Or (납입기간 <> 0 And 납입주기 = 99) _
+      Or 납입기간 <> 99 And (보험기간 < 45 And 납입기간 > 45) _
+      Or (Cells(1, 23) = 1 And 보험기간 = 납입기간) _
+      Or 주피연령 + n > Cells(28, 23) _
+      Or 주피연령 + m > Cells(29, 23) _
+      Or (보험기간 >= 45) And (주피연령 > (보험기간 - Cells(30, 23))) _
+      Or (납입기간 >= 45) And (납입기간 <> 99) And (주피연령 > (납입기간 - Cells(31, 23))) _
+      Or Cells(3, 8) > 1 And Cells(5, 8) <> 0 And (갱신여부 = "N") And (최초연령 <> 주피연령) _
+      Or Cells(3, 8) > 1 And Cells(5, 8) <> 0 And (갱신여부 = "Y") And (주피연령 >= Cells(5, 9) + Cells(5, 4)) And (최초연령 < Cells(5, 9)) _
+      Or Cells(3, 8) > 1 And Cells(5, 8) <> 0 And (갱신여부 = "Y") And ((주피연령 - 최초연령) / Cells(5, 4) - Int((주피연령 - 최초연령) / Cells(5, 4)) <> 0) _
+      Or Cells(3, 8) > 1 And Cells(5, 8) <> 0 And (갱신여부 = "Y") And (최초연령 >= 주피연령) _
+      Or 보험기간 = 30 And (납입기간 = 20 Or 납입기간 = 99 Or 납입기간 = 1) _
+      Or 보험기간 = 100 And (납입기간 = 5 Or 납입기간 = 99 Or 납입기간 = 1) _
+      Or Cells(34, 23) = 0 And (보험기간 = 1) _
+      Or Cells(34, 23) = 1 And (보험기간 = 30 Or 보험기간 = 100) _
+      Or Cells(36, 23) = 1 And (보험기간 = 30) _
+      Or Cells(34, 23) = 1 And (주피연령 > 0) _
+      Or Cells(33, 23) = 1 And (주피연령 > 0) _
+      Or Cells(36, 23) = 1 And 보험기간 = 납입기간 And Cells(32, 23) = 1 Then '[NL통합] 납입후환급률연동형은 보험기간이 보험료납입기간을 초과하여야함/ 80세만기 80세납삭제)
+         제한설정 = 1
+      Else
+         제한설정 = 0
+      End If
+
+End Sub
+    
+Public Sub 추가입력설정()
+
+   '================생성   규칙  설정================  '보종코드별 상이한 보험세목을 생성하기 위함
+   
+   If i1 = 1 Then
+          Cells(32, 23) = 0
+          Cells(33, 23) = 1
+          Cells(34, 23) = 1
+          Cells(36, 23) = 0
+   ElseIf i1 = 2 Then
+          Cells(32, 23) = 1
+          Cells(33, 23) = 1
+          Cells(34, 23) = 0
+          Cells(36, 23) = 1
+   ElseIf i1 = 3 Then
+          Cells(32, 23) = 0
+          Cells(33, 23) = 1
+          Cells(34, 23) = 0
+          Cells(36, 23) = 0
+   ElseIf i1 = 4 Then
+          Cells(32, 23) = 1
+          Cells(33, 23) = 0
+          Cells(34, 23) = 0
+          Cells(36, 23) = 1
+   ElseIf i1 = 5 Then
+          Cells(32, 23) = 0
+          Cells(33, 23) = 0
+          Cells(34, 23) = 0
+          Cells(36, 23) = 0
+   End If
+   
+End Sub
+Public Sub 입력설정()
+
+   '================위치  설정================
+   Cells(4, 23) = i19                '주피성별
+   Cells(5, 23) = 최초연령
+   Cells(6, 23) = 주피연령
+   Cells(7, 23) = 종피연령
+   Cells(8, 23) = 종피성별
+   Cells(9, 23) = 보험기간
+   Cells(10, 23) = n
+   Cells(11, 23) = n2
+   Cells(12, 23) = m
+   Cells(13, 23) = 납입주기
+   Cells(14, 23) = 기준가입금액 / 10000
+   Cells(15, 23) = 갱신여부
+   Cells(16, 23) = 표책구분코드
+   Cells(17, 23) = 보종코드
+
+End Sub
+
+Public Sub 보험료및준비금_전산반영_모두실행()
+
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+    
+    Dim 남자보험료 As Double, 여자보험료 As Double, 남자투입보험료 As Double, 여자투입보험료 As Double
+    Dim 보험료출력 As String, 투입보험료출력 As String
+    Dim 준비금시작 As String, 준비금끝 As String
+    Dim 적용남자준비금(100) As Variant, 적용남자순보험료 As Double, 적용남자신계약비 As Double, 표준남자신계약비 As Double, 적용여자준비금(100) As Variant, 적용여자순보험료 As Double, 적용여자신계약비 As Double, 표준여자신계약비 As Double
+    Dim 준비금출력(100) As String
+    Dim i1끝 As Integer, i2끝 As Integer, i3끝 As Integer, i4끝 As Integer, i5끝 As Integer, i6끝 As Integer, i7끝 As Integer, i8끝 As Integer, i9끝 As Integer, i10끝 As Integer
+    Dim i11끝 As Integer, i12끝 As Integer, i13끝 As Integer, i14끝 As Integer, i15끝 As Integer, i16끝 As Integer, i17끝 As Integer, i18끝 As Integer, i19끝 As Integer, i20끝 As Integer
+    Dim CountP As Double, CountV As Double, CountPs As Double
+    Dim 재원출력 As String, 재원 As String, 재원출력_int As Double, 해약환급금(100) As String   '재원T
+        
+    i1끝 = Cells(3, 2)   '보종코드
+    i2끝 = Cells(3, 3)   '갱신여부
+    i3끝 = Cells(3, 4)   '보험기간
+    i4끝 = Cells(3, 5)   '제2보험기간
+    i5끝 = Cells(3, 6)   '납입기간
+    i6끝 = Cells(3, 7)   '납입주기
+    i7끝 = Cells(3, 8)   '최초연령
+    i8끝 = Cells(3, 9)   '주피연령
+    i9끝 = Cells(3, 10)  '종피연령
+    i10끝 = Cells(3, 11) '종피성별
+    i11끝 = Cells(3, 12) '표책구분코드
+    i12끝 = Cells(3, 13) '생사구분코드
+                    
+    저장경로 = Cells(1, 3)
+    기준가입금액 = Cells(2, 3)
+    
+    CountP = 0
+    CountV = 0
+    CountPs = 0
+    
+    For i1 = 1 To i1끝                   '보종코드별
+    
+    추가입력설정
+    
+        If Cells(23, 23) = 1 Then
+          Open 저장경로 & "보험료_" & Cells(4 + i1, 2) & ".txt" For Output As #1
+          Open 저장경로 & "재원_" & Cells(4 + i1, 2) & ".txt" For Output As #4       '재원T
+        End If
+        If Cells(24, 23) = 1 Then
+            Open 저장경로 & "준비금(" & Cells(5, 12) & ")_" & Cells(4 + i1, 2) & ".txt" For Output As #2
+        End If
+        If Cells(25, 23) = 1 Then
+        Open 저장경로 & "투입보험료_" & Cells(4 + i1, 2) & ".txt" For Output As #3
+        End If
+    For i2 = 1 To i2끝                   '갱신여부별
+        If i2 = 2 Then
+            i3끝 = Cells(3, 17)
+            i8끝 = Cells(3, 18)
+        End If
+    For i3 = 1 To i3끝                   '보험기간(제1보험기간)별
+    For i4 = 1 To i4끝                   '제2보험기간별
+    For i5 = 1 To i5끝                   '납입기간별
+    For i7 = 1 To i7끝                   '최초가입연령별
+    For i8 = 1 To i8끝                   '주피연령별
+    For i9 = 1 To i9끝                   '종피연령별
+    For i10 = 1 To i10끝                 '종피성별별
+    For i6 = 1 To i6끝                   '납입주기별
+    For i12 = 1 To i12끝                 '생사구분코드별
+    For i11 = 1 To i11끝                 '표책구분코드별
+   
+    설정
+    제한
+            
+    If 제한설정 = 1 Then
+    Else
+        For i19 = 1 To 2                                         '주피성별
+             입력설정
+                
+             If i19 = 2 Then
+                Application.Calculation = xlCalculationAutomatic
+                Application.Calculation = xlCalculationManual
+                        
+                            If Cells(23, 23) = 1 Then
+                            여자보험료 = Cells(4, 28)
+                            
+                            보험료출력 = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                         WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                         WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                         "0" & "," & "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                         WorksheetFunction.Text(남자보험료, "00000000000000000.000") & "," & WorksheetFunction.Text(여자보험료, "00000000000000000.000")
+                            Print #1, 보험료출력
+                            CountP = CountP + 1
+                            End If
+'=====================================================================================================================재원T
+                            
+                            If 납입주기구분코드 = "01" And Cells(16, 23) = 14 And Cells(15, 23) = "N" Then
+                               If Cells(36, 23) = 1 Then
+                                 
+                                 For 재원출력_int = 1 To 37
+                                 
+                                 해약환급금(재원출력_int) = Cells(12 + 재원출력_int, 38)
+                                 
+                                 Next 재원출력_int
+                                 
+                                 재원 = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                        WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                        WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                        "0" & "," & "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(i19, "0") & "," & WorksheetFunction.Text(여자보험료, "00000000000000000.000") & "," & WorksheetFunction.Text(Cells(8, 27 + i12), "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(Cells(9, 27 + i12), "00000000000000000.000")
+                              
+                                 For 재원출력_int = 1 To 37
+                                     재원 = 재원 & "," & WorksheetFunction.Text(해약환급금(재원출력_int), "00000000000000000.0000000000")
+                                 Next 재원출력_int
+                              
+                                Else
+                              
+                                 For 재원출력_int = 1 To 37
+                                 
+                                 해약환급금(재원출력_int) = Cells(12 + 재원출력_int, 35)
+                                 
+                                 Next 재원출력_int
+                              
+                                 재원 = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                        WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                        WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                        "0" & "," & "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(i19, "0") & "," & WorksheetFunction.Text(여자보험료, "00000000000000000.000") & "," & WorksheetFunction.Text(Cells(8, 27 + i12), "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(Cells(9, 27 + i12), "00000000000000000.000")
+                              
+                                 For 재원출력_int = 1 To 37
+                                     재원 = 재원 & "," & WorksheetFunction.Text(해약환급금(재원출력_int), "00000000000000000.0000000000")
+                                 Next 재원출력_int
+                                 
+                              End If
+                              
+                              Print #4, 재원
+                             Else
+                           End If
+'===========================================================================================================================재원T
+                                
+                            If Cells(25, 23) = 1 Then
+                            여자투입보험료 = Cells(4, 30)
+                                                            
+                            투입보험료출력 = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                         WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                         WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                         "0" & "," & "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                         WorksheetFunction.Text(남자투입보험료, "00000000000000000.000") & "," & WorksheetFunction.Text(여자투입보험료, "00000000000000000.000")
+                            Print #3, 투입보험료출력
+                            CountPs = CountPs + 1
+                            End If
+                            
+
+                                                                
+                            If Cells(24, 23) = 1 Then
+                                If Cells(1, 28) = 0 And 납입주기 = 12 And Cells(32, 23) = 0 Then   '연납없을 때 월납 강제 연납세팅
+                                   납입주기 = 1
+                                   납입주기구분코드 = 12
+                                ElseIf Cells(32, 23) = 1 Then
+                                   납입주기 = 1
+                                   납입주기구분코드 = 1
+                                End If
+                                     
+                                If 납입기간 <> 0 And 납입주기 <> 1 Then  '연납만 돌도록
+                                Else
+                                
+                                    준비금시작 = 1
+                                    준비금끝 = n                                '보기까지-완납후 일시납키조립 미사용(키조립유형 단순화, NL유형에 없음)
+                                          
+                                    '===================적용되는부분만 설정=======================
+                                    
+                                        적용여자준비금(0) = Cells(12, 27 + i12)
+                                        적용여자순보험료 = Cells(7, 27 + i12)
+                                        적용여자신계약비 = Cells(8, 27 + i12)
+                                        표준여자신계약비 = Cells(9, 27 + i12)
+                                    
+                                    '=============================================================
+                                    
+                                    If 적용여자준비금(0) < 0 Then
+                                        적용여자준비금(0) = "-" & WorksheetFunction.Text(Abs(적용여자준비금(0)), "0000000000000000.000")
+                                    Else
+                                        적용여자준비금(0) = WorksheetFunction.Text(Abs(적용여자준비금(0)), "00000000000000000.000")
+                                    End If
+                                        
+                                    For i20 = 준비금시작 To 준비금끝
+                                        
+                                    '===================적용되는부분만 설정=======================
+                                     
+                                    적용여자준비금(i20) = Cells(12 + i20, 27 + i12)
+                                      
+                                    '=============================================================
+                                        
+                                    If 적용여자준비금(i20) < 0 Then
+                                        적용여자준비금(i20) = "-" & WorksheetFunction.Text(Abs(적용여자준비금(i20)), "0000000000000000.000")
+                                    Else
+                                        적용여자준비금(i20) = WorksheetFunction.Text(Abs(적용여자준비금(i20)), "00000000000000000.000")
+                                    End If
+                                        
+                                    If Cells(16, 23) = 13 And (i20 - 1) < m Then  '무저해지납중
+                                        If Cells(36, 23) = 1 Then     '납중무해지(준비금, 피베타, 신계약비 모두 0)
+                                        준비금출력(i20) = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                                          WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                                          WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                                          "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(표책구분코드, "00") & "," & WorksheetFunction.Text(생사구분코드, "00") & "," & WorksheetFunction.Text(i20 - 1, "00000") & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                                          "00000000000000000.000" & "," & "00000000000000000.000" & "," & _
+                                                          "00000000000000000.0000000000" & "," & "00000000000000000.000" & "," & "00000000000000000.000" & "," & _
+                                                          "00000000000000000.000" & "," & "00000000000000000.000" & "," & _
+                                                          "00000000000000000.0000000000" & "," & "00000000000000000.000" & "," & "00000000000000000.000"
+                                        Else  '납중저해지(피베타만 0)
+                                        준비금출력(i20) = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                                          WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                                          WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                                          "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(표책구분코드, "00") & "," & WorksheetFunction.Text(생사구분코드, "00") & "," & WorksheetFunction.Text(i20 - 1, "00000") & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                                          적용남자준비금(i20 - 1) & "," & 적용남자준비금(i20) & "," & _
+                                                          "00000000000000000.0000000000" & "," & WorksheetFunction.Text(적용남자신계약비, "00000000000000000.000") & "," & WorksheetFunction.Text(표준남자신계약비, "00000000000000000.000") & "," & _
+                                                          적용여자준비금(i20 - 1) & "," & 적용여자준비금(i20) & "," & _
+                                                          "00000000000000000.0000000000" & "," & WorksheetFunction.Text(적용여자신계약비, "00000000000000000.000") & "," & WorksheetFunction.Text(표준여자신계약비, "00000000000000000.000")
+                                        End If
+                                    ElseIf Cells(16, 23) = 13 And (i20 - 1) >= m Then   '무저해지납후(피베타, 신계약비 0)
+                                        준비금출력(i20) = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                                          WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                                          WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                                          "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(표책구분코드, "00") & "," & WorksheetFunction.Text(생사구분코드, "00") & "," & WorksheetFunction.Text(i20 - 1, "00000") & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                                          적용남자준비금(i20 - 1) & "," & 적용남자준비금(i20) & "," & _
+                                                          "00000000000000000.0000000000" & "," & "00000000000000000.000" & "," & "00000000000000000.000" & "," & _
+                                                          적용여자준비금(i20 - 1) & "," & 적용여자준비금(i20) & "," & _
+                                                          "00000000000000000.0000000000" & "," & "00000000000000000.000" & "," & "00000000000000000.000"
+                                                          
+                                    ElseIf Cells(16, 23) = 15 Then '[NL통합] 15 테이블 순보험료자리에 보장위험보험료 나머지 0
+                                        준비금출력(i20) = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                                          WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                                          WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                                          "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(표책구분코드, "00") & "," & WorksheetFunction.Text(생사구분코드, "00") & "," & WorksheetFunction.Text(i20 - 1, "00000") & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                                          "00000000000000000.000" & "," & "00000000000000000.000" & "," & _
+                                                          WorksheetFunction.Text(적용남자준비금(i20 - 1), "00000000000000000.0000000000") & "," & "00000000000000000.000" & "," & "00000000000000000.000" & "," & _
+                                                          "00000000000000000.000" & "," & "00000000000000000.000" & "," & _
+                                                          WorksheetFunction.Text(적용여자준비금(i20 - 1), "00000000000000000.0000000000") & "," & "00000000000000000.000" & "," & "00000000000000000.000"
+
+                                    Else  '무저해지 이외
+                                        준비금출력(i20) = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                                          WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                                          WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                                          "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(표책구분코드, "00") & "," & WorksheetFunction.Text(생사구분코드, "00") & "," & WorksheetFunction.Text(i20 - 1, "00000") & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                                          적용남자준비금(i20 - 1) & "," & 적용남자준비금(i20) & "," & _
+                                                          WorksheetFunction.Text(적용남자순보험료, "00000000000000000.0000000000") & "," & WorksheetFunction.Text(적용남자신계약비, "00000000000000000.000") & "," & WorksheetFunction.Text(표준남자신계약비, "00000000000000000.000") & "," & _
+                                                          적용여자준비금(i20 - 1) & "," & 적용여자준비금(i20) & "," & _
+                                                          WorksheetFunction.Text(적용여자순보험료, "00000000000000000.0000000000") & "," & WorksheetFunction.Text(적용여자신계약비, "00000000000000000.000") & "," & WorksheetFunction.Text(표준여자신계약비, "00000000000000000.000")
+                                    End If
+                                                                            
+                                                                            
+                                    Print #2, 준비금출력(i20)
+                                    CountV = CountV + 1
+                                            
+                                    Next i20
+                                    
+                                End If
+                            
+                                If Cells(1, 28) = 0 And 납입주기 = 1 Then   '강제연납세팅 원복
+                                    납입주기 = 12
+                                    납입주기구분코드 = 1
+                                End If
+                            
+                            End If
+                        
+             Else
+                        
+                            Application.Calculation = xlCalculationAutomatic
+                            Application.Calculation = xlCalculationManual
+                            
+                            If Cells(23, 23) = 1 Then
+                                남자보험료 = Cells(4, 28)
+                            End If
+                            
+'=====================================================================================================================재원T
+                                
+                                
+                            If 납입주기구분코드 = "01" And Cells(16, 23) = 14 And Cells(15, 23) = "N" Then
+                               If Cells(36, 23) = 1 Then
+                                 
+                                 For 재원출력_int = 1 To 37
+                                 
+                                 해약환급금(재원출력_int) = Cells(12 + 재원출력_int, 38)
+                                 
+                                 Next 재원출력_int
+                                 
+                                 재원 = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                        WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                        WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                        "0" & "," & "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(i19, "0") & "," & WorksheetFunction.Text(남자보험료, "00000000000000000.000") & "," & WorksheetFunction.Text(Cells(8, 27 + i12), "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(Cells(9, 27 + i12), "00000000000000000.000")
+                              
+                                 For 재원출력_int = 1 To 37
+                                     재원 = 재원 & "," & WorksheetFunction.Text(해약환급금(재원출력_int), "00000000000000000.0000000000")
+                                 Next 재원출력_int
+                              
+                                Else
+                              
+                                 For 재원출력_int = 1 To 37
+                                 
+                                 해약환급금(재원출력_int) = Cells(12 + 재원출력_int, 35)
+                                 
+                                 Next 재원출력_int
+                              
+                                 재원 = 보종코드 & "," & 갱신여부 & "," & WorksheetFunction.Text(보험기간, "00000") & "," & 보험기간구분코드 & "," & WorksheetFunction.Text(제2보험기간, "00000") & "," & 제2보험기간구분코드 & "," & _
+                                        WorksheetFunction.Text(납기, "00000") & "," & 납입기간구분코드 & "," & WorksheetFunction.Text(납입주기구분코드, "00") & "," & _
+                                        WorksheetFunction.Text(최초연령, "000") & "," & WorksheetFunction.Text(주피연령, "000") & "," & WorksheetFunction.Text(종피연령, "000") & "," & WorksheetFunction.Text(종피성별, "0") & "," & _
+                                        "0" & "," & "0" & "," & "0" & "," & "0" & "," & WorksheetFunction.Text(기준가입금액, "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(i19, "0") & "," & WorksheetFunction.Text(남자보험료, "00000000000000000.000") & "," & WorksheetFunction.Text(Cells(8, 27 + i12), "00000000000000000.000") & "," & _
+                                        WorksheetFunction.Text(Cells(9, 27 + i12), "00000000000000000.000")
+                              
+                                 For 재원출력_int = 1 To 37
+                                     재원 = 재원 & "," & WorksheetFunction.Text(해약환급금(재원출력_int), "00000000000000000.0000000000")
+                                 Next 재원출력_int
+                                 
+                              End If
+                              
+                              Print #4, 재원
+                             Else
+                           End If
+
+'=====================================================================================================================재원T
+                            If Cells(25, 23) = 1 Then
+                                남자투입보험료 = Cells(4, 30)
+                            End If
+                    
+                            If Cells(24, 23) = 1 Then
+                                If Cells(1, 28) = 0 And 납입주기 = 12 Then   '연납없을 때 월납 강제 연납세팅
+                                   납입주기 = 1
+                                   납입주기구분코드 = 12
+                                End If
+                                    
+                                If 납입기간 <> 0 And 납입주기 <> 1 Then  '연납만
+                                Else
+    
+                                    준비금시작 = 0
+                                    준비금끝 = n                                '보기까지-완납후 일시납키조립 미사용(키조립유형 단순화, NL유형에 없음)
+                                
+                                    For i20 = 준비금시작 To 준비금끝
+                                
+                                    '===================적용되는부분만 설정=======================
+                                    
+                                    적용남자준비금(i20) = Cells(12 + i20, 27 + i12)
+                                    적용남자순보험료 = Cells(7, 27 + i12)
+                                    적용남자신계약비 = Cells(8, 27 + i12)
+                                    표준남자신계약비 = Cells(9, 27 + i12)
+                                    
+                                    '=============================================================
+                                    
+                                    If 적용남자준비금(i20) < 0 Then
+                                        적용남자준비금(i20) = "-" & WorksheetFunction.Text(Abs(적용남자준비금(i20)), "0000000000000000.000")
+                                    Else
+                                        적용남자준비금(i20) = WorksheetFunction.Text(Abs(적용남자준비금(i20)), "00000000000000000.000")
+                                    End If
+                                
+                                    Next i20
+                                    
+                                End If
+                                
+                                If Cells(1, 28) = 0 And 납입주기 = 1 Then   '강제연납세팅 원복
+                                    납입주기 = 12
+                                    납입주기구분코드 = 1
+                                End If
+                                
+                            End If
+
+ 
+             End If
+        Next i19
+            
+    End If
+        
+    Next i11, i12, i6, i10, i9, i8, i7, i5, i4, i3, i2
+
+    
+        If Cells(23, 23) = 1 Then
+            Close #1
+            Close #4      '재원T
+        End If
+        If Cells(24, 23) = 1 Then
+            Close #2
+        End If
+        If Cells(25, 23) = 1 Then
+            Close #3
+        End If
+    Next i1
+
+    If CountP <> 0 Then
+        Cells(23, 24) = CountP
+    End If
+    If CountV <> 0 Then
+        Cells(24, 24) = CountV
+    End If
+    If CountPs <> 0 Then
+        Cells(25, 24) = CountPs
+    End If
+    
+    Application.Calculation = xlCalculationAutomatic
+    
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- Module: Sheet12, Type: 100 ---
+(No code in this module)
+
+--- Module: Sheet7, Type: 100 ---
+(No code in this module)
+
+--- Module: Sheet2, Type: 100 ---
+(No code in this module)
+
+--- Module: Sheet8, Type: 100 ---
+(No code in this module)
+
+--- Module: Sheet6, Type: 100 ---
+(No code in this module)

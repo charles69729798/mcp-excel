@@ -1,0 +1,335 @@
+{
+    "productName": "신한주니어큐브종합건강상해보험",
+    "productCategory": "건강보장",
+    "planAxes": {
+        "refundType": [
+            "해약환급금 미지급형",
+            "일반형"
+        ],
+        "targetType": [
+            "어린이형",
+            "태아형"
+        ]
+    },
+    "mainContract": {
+        "params": {
+            "insurableAge": {
+                "min": 0,
+                "max": 14
+            },
+            "gender": {
+                "options": [
+                    "남",
+                    "여"
+                ]
+            },
+            "insurancePeriod": {
+                "options": [
+                    "30세만기",
+                    "100세만기"
+                ]
+            },
+            "paymentPeriod": {
+                "options": [
+                    "5년납",
+                    "10년납",
+                    "20년납",
+                    "30년납",
+                    "전기납"
+                ]
+            }
+        },
+        "rules": [
+            {
+                "if": [
+                    {
+                        "param": "targetType",
+                        "is": "어린이형"
+                    },
+                    {
+                        "param": "refundType",
+                        "is": "해약환급금 미지급형"
+                    }
+                ],
+                "then": {
+                    "insurancePeriod": {
+                        "include": [
+                            "100세만기"
+                        ]
+                    },
+                    "paymentPeriod": {
+                        "include": [
+                            "10년납",
+                            "20년납",
+                            "30년납"
+                        ]
+                    }
+                }
+            },
+            {
+                "if": [
+                    {
+                        "param": "targetType",
+                        "is": "어린이형"
+                    },
+                    {
+                        "param": "refundType",
+                        "is": "일반형"
+                    },
+                    {
+                        "param": "insurancePeriod",
+                        "is": "30세만기"
+                    }
+                ],
+                "then": {
+                    "paymentPeriod": {
+                        "include": [
+                            "5년납",
+                            "10년납",
+                            "전기납"
+                        ]
+                    }
+                }
+            },
+            {
+                "if": [
+                    {
+                        "param": "targetType",
+                        "is": "어린이형"
+                    },
+                    {
+                        "param": "refundType",
+                        "is": "일반형"
+                    },
+                    {
+                        "param": "insurancePeriod",
+                        "is": "100세만기"
+                    }
+                ],
+                "then": {
+                    "paymentPeriod": {
+                        "include": [
+                            "10년납",
+                            "20년납",
+                            "30년납"
+                        ]
+                    }
+                }
+            },
+            {
+                "if": [
+                    {
+                        "param": "targetType",
+                        "is": "태아형"
+                    }
+                ],
+                "then": {
+                    "insurableAge": {
+                        "options": [
+                            "태아"
+                        ]
+                    },
+                    "insurancePeriod": {
+                        "options": [
+                            "태아보장기간"
+                        ]
+                    },
+                    "paymentPeriod": {
+                        "options": [
+                            "전기납"
+                        ]
+                    }
+                }
+            },
+            {
+                "if": [
+                    {
+                        "param": "targetType",
+                        "is": "태아형"
+                    }
+                ],
+                "then": {
+                    "riders": {
+                        "require": [
+                            "주산기질환수술특약(무배당)",
+                            "모성보장특약(무배당)"
+                        ]
+                    }
+                }
+            },
+            {
+                "if": [
+                    {
+                        "param": "paymentPeriod",
+                        "is": "> insurancePeriod"
+                    }
+                ],
+                "then": {
+                    "validity": false,
+                    "message": "납입기간은 보험기간을 초과할 수 없습니다."
+                }
+            }
+        ]
+    },
+    "riders": [
+        {
+            "riderName": "신한주니어큐브종합건강상해보험 일반암진단특약 무배당 해약환급금 미지급형",
+            "params": {
+                "insurableAge": {
+                    "min": 0,
+                    "max": 14
+                },
+                "insurancePeriod": {
+                    "options": [
+                        "100세만기"
+                    ]
+                },
+                "paymentPeriod": {
+                    "options": [
+                        "10년납",
+                        "20년납",
+                        "30년납"
+                    ]
+                }
+            },
+            "rules": [
+                {
+                    "type": "dependency",
+                    "message": "주계약이 '해약환급금 미지급형'일 때만 가입 가능합니다.",
+                    "condition": {
+                        "mainContract.refundType": "해약환급금 미지급형"
+                    }
+                },
+                {
+                    "type": "mandatory-group",
+                    "message": "가입 시 '남녀특정암진단특약' 및 '소액암진단특약'과 함께 부가해야 합니다.",
+                    "with": [
+                        "신한주니어큐브종합건강상해보험 남녀특정암진단특약 무배당 해약환급금 미지급형",
+                        "신한주니어큐브종합건강상해보험 소액암진단특약 무배당 해약환급금 미지급형"
+                    ]
+                }
+            ]
+        },
+        {
+            "riderName": "신한주니어큐브종합건강상해보험 일반암진단특약 무배당 일반형",
+            "params": {
+                "insurableAge": {
+                    "min": 0,
+                    "max": 14
+                },
+                "insurancePeriod": {
+                    "options": [
+                        "30세만기",
+                        "100세만기"
+                    ]
+                },
+                "paymentPeriod": {
+                    "options": [
+                        "5년납",
+                        "10년납",
+                        "20년납",
+                        "30년납",
+                        "전기납"
+                    ]
+                }
+            },
+            "rules": [
+                {
+                    "type": "dependency",
+                    "message": "주계약이 '일반형'일 때만 가입 가능합니다.",
+                    "condition": {
+                        "mainContract.refundType": "일반형"
+                    }
+                },
+                {
+                    "type": "mandatory-group",
+                    "message": "가입 시 '남녀특정암진단특약' 및 '소액암진단특약'과 함께 부가해야 합니다.",
+                    "with": [
+                        "신한주니어큐브종합건강상해보험 남녀특정암진단특약 무배당 일반형",
+                        "신한주니어큐브종합건강상해보험 소액암진단특약 무배당 일반형"
+                    ]
+                },
+                {
+                    "if": [
+                        {
+                            "param": "insurancePeriod",
+                            "is": "30세만기"
+                        }
+                    ],
+                    "then": {
+                        "paymentPeriod": {
+                            "exclude": [
+                                "10년납",
+                                "전기납"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "riderName": "신한주니어큐브종합건강상해보험 고액암진단특약 무배당 해약환급금 미지급형",
+            "params": {
+                "insurableAge": {
+                    "min": 0,
+                    "max": 14
+                },
+                "insurancePeriod": {
+                    "options": [
+                        "100세만기"
+                    ]
+                },
+                "paymentPeriod": {
+                    "options": [
+                        "10년납",
+                        "20년납",
+                        "30년납"
+                    ]
+                }
+            },
+            "rules": [
+                {
+                    "type": "dependency",
+                    "requires": [
+                        "신한주니어큐브종합건강상해보험 일반암진단특약 무배당 해약환급금 미지급형"
+                    ]
+                }
+            ]
+        },
+        {
+            "riderName": "신한주니어큐브종합건강상해보험 첫날부터입원보장특약 무배당 갱신형",
+            "params": {
+                "insurableAge": {
+                    "min": 0,
+                    "max": 14
+                },
+                "insurancePeriod": {
+                    "options": [
+                        "5년만기"
+                    ]
+                },
+                "paymentPeriod": {
+                    "options": [
+                        "전기납"
+                    ]
+                },
+                "renewalCycle": 5,
+                "maxRenewalAge": 100
+            },
+            "rules": [
+                {
+                    "if": [
+                        {
+                            "param": "targetType",
+                            "is": "태아형"
+                        }
+                    ],
+                    "then": {
+                        "validity": false,
+                        "message": "태아일 경우 가입이 불가합니다."
+                    }
+                }
+            ]
+        }
+    ]
+}

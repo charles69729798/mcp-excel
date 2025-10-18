@@ -1,0 +1,4 @@
+C2 Formula: =VLOOKUP(A2, 위험률!$A$3:$C$103, IF(입력!$B4="남", 2, 3), FALSE)
+C2 FormulaLocal: =VLOOKUP(A2, 위험률!$A$3:$C$103, IF(입력!$B4="남", 2, 3), FALSE)
+J1 Formula: =1+1
+J1 FormulaLocal: =1+1
