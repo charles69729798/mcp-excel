@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Excel MCP Server
 
 This project provides a Flask-based server for managing and controlling Excel files, offering advanced functionalities such as creating files from templates, defining named ranges, inserting formulas, and handling VBA code.
@@ -109,3 +110,8 @@ End Sub"
 ## Trust Access to the VBA project object model
 
 For VBA macro functionality to work correctly, you might need to enable "Trust access to the VBA project object model" in Excel's Trust Center settings. This is typically found under `File > Options > Trust Center > Trust Center Settings... > Macro Settings`.
+=======
+# mcp-excel
+
+This project provides a Flask-based server for managing andcontrolling Excel files, offering advanced functionalities such  as creating files from templates, defining named ranges,inserting formulas, and handling VBA code.
+>>>>>>> 1c8ded511a3b41c4fe36cd9cd22da36eeb15052a
